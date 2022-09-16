@@ -26,7 +26,6 @@ public class MyWebStorage implements MethodChannel.MethodCallHandler {
     this.plugin = plugin;
     channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_webstoragemanager");
     channel.setMethodCallHandler(this);
-    webStorageManager = WebStorage.getInstance();
   }
 
   @Override
@@ -36,13 +35,13 @@ public class MyWebStorage implements MethodChannel.MethodCallHandler {
         getOrigins(result);
         break;
       case "deleteAllData":
-        webStorageManager.deleteAllData();
+        WebStorage.getInstance().deleteAllData();
         result.success(true);
         break;
       case "deleteOrigin":
         {
           String origin = (String) call.argument("origin");
-          webStorageManager.deleteOrigin(origin);
+          WebStorage.getInstance().deleteOrigin(origin);
         }
         result.success(true);
         break;
@@ -64,7 +63,7 @@ public class MyWebStorage implements MethodChannel.MethodCallHandler {
   }
 
   public void getOrigins(final MethodChannel.Result result) {
-    webStorageManager.getOrigins(new ValueCallback<Map>() {
+    WebStorage.getInstance().getOrigins(new ValueCallback<Map>() {
       @Override
       public void onReceiveValue(Map value) {
         List<Map<String, Object>> origins = new ArrayList<>();
@@ -84,7 +83,7 @@ public class MyWebStorage implements MethodChannel.MethodCallHandler {
   }
 
   public void getQuotaForOrigin(String origin, final MethodChannel.Result result) {
-    webStorageManager.getQuotaForOrigin(origin, new ValueCallback<Long>() {
+    WebStorage.getInstance().getQuotaForOrigin(origin, new ValueCallback<Long>() {
       @Override
       public void onReceiveValue(Long value) {
         result.success(value);
@@ -93,7 +92,7 @@ public class MyWebStorage implements MethodChannel.MethodCallHandler {
   }
 
   public void getUsageForOrigin(String origin, final MethodChannel.Result result) {
-    webStorageManager.getUsageForOrigin(origin, new ValueCallback<Long>() {
+    WebStorage.getInstance().getUsageForOrigin(origin, new ValueCallback<Long>() {
       @Override
       public void onReceiveValue(Long value) {
         result.success(value);
